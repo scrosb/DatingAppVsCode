@@ -5,14 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
 using API.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    public class UsersController : BaseApiController
     {
         //We have access to our dbcontext using Dependency injection and context. 
 
@@ -24,11 +23,12 @@ namespace API.Controllers
 
         //HttpGet sending back an Ienumerable. MAKE YOUR APP ASYNC IMMEDIATELY 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
         {
             return await _context.Users.ToListAsync();
         }
-
+        [Authorize]
         //api/users/3- 3 is what we will be getting. 
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUser>> GetUser(int id)
