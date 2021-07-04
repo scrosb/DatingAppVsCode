@@ -1,5 +1,8 @@
 import { HttpClient } from '@angular/common/http';
+import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
+import { User } from './_models/user';
+import { AccountService } from './_services/account.service';
 
 
 
@@ -13,20 +16,14 @@ export class AppComponent implements OnInit{
   //our users are anything, we are taking off type safety on this parameter. 
   users: any;
 
-  constructor(private http: HttpClient){}
+  constructor(private accountService: AccountService){}
 
     ngOnInit() {
-      this.getUsers()
+      this.setCurrentUser();
     }
 
-    getUsers() {
-      this.http.get('https://localhost:5001/api/users').subscribe(response => {
-        //set users class property to the response. 
-        this.users = response;
-      }, error => {
-        console.log(error)
-      })
+    setCurrentUser(){
+      const user: User = JSON.parse(localStorage.getItem('user'));
+      this.accountService.setCurrentUser(user);
     }
-
-
 }
