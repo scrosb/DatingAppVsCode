@@ -8,16 +8,28 @@ import { NavComponent } from './nav/nav.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown'
-import { FormsModule } from '@angular/forms';
+// import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
+import { MemberListComponent } from './members/member-list/member-list.component';
+import { MemberDetailComponent } from './members/member-detail/member-detail.component';
+import { ListsComponent } from './lists/lists.component';
+import { MessagesComponent } from './messages/messages.component';
+import { ToastrModule } from 'ngx-toastr';
+import { FormsModule } from '@angular/forms';
+import { SharedModule } from './_modules/shared.module';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
     HomeComponent,
-    RegisterComponent
+    RegisterComponent,
+    MemberListComponent,
+    MemberDetailComponent,
+    ListsComponent,
+    MessagesComponent
   ],
   imports: [
     BrowserModule,
@@ -25,8 +37,8 @@ import { RegisterComponent } from './register/register.component';
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
-    //forRoot, means it has some services or components it needs added. 
-    BsDropdownModule.forRoot()
+    SharedModule
+
   ],
   providers: [],
   //Set of components that are bootstraped when the module itself is bootstraped. 
