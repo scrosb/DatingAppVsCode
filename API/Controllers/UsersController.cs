@@ -2,6 +2,7 @@
 //We are only using C for the controller. 
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
@@ -43,6 +44,23 @@ namespace API.Controllers
             // var user = await _userRepository.GetUserByUsernameAsync(username);
             //return _mapper.Map<MemberDto>(user);
             return await _userRepository.GetMemberAsync(username);
+        }
+
+        //Update Member, The client has everything it needs, so we don't need to return the user object from this
+        [HttpPut]
+        public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
+        {
+            //get ahold of the user and the users username
+            //This should give us the username from the token that the user enters to get their username. 
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await _userRepository.GetUserByUsernameAsync(username);
+            //This saves us manually mapping from our update DTO and our user update. 
+            _mapper.Map(memberUpdateDto, user);
+            _userRepository.Update(user);
+
+            if (await _userRepository.SaveAllAsync()) return NoContent();
+
+            return BadRequest("Failed to Update User");
         }
     }
 }
