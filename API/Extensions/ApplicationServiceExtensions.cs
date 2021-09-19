@@ -14,8 +14,11 @@ namespace API.Extensions
         //Always specify this before the type that you are extending. 
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
+            services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
             //The reason for creating Interfaces is testing. Mock the interface easily. 
             services.AddScoped<ITokenService, TokenService>();
+            //Photo Service
+            services.AddScoped<IPhotoService, PhotoService>();
             //Add User Repository its now available to our user controller
             services.AddScoped<IUserRepository, UserRepository>();
 
