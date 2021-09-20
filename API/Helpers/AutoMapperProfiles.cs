@@ -18,7 +18,8 @@ namespace API.Helpers
             CreateMap<Photo, PhotoDto>();
             //We want to go from a member UpdateDto to our AppUser
             CreateMap<MemberUpdateDto, AppUser>();
-
+            //We don't have tom map the properties manually. 
+            CreateMap<RegisterDto, AppUser>();
         }
     }
 }
