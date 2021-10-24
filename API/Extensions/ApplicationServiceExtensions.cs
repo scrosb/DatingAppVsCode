@@ -21,7 +21,8 @@ namespace API.Extensions
             services.AddScoped<IPhotoService, PhotoService>();
             //Add User Repository its now available to our user controller
             services.AddScoped<IUserRepository, UserRepository>();
-
+            //Log the last active time
+            services.AddScoped<LogUserActivity>();
             //add automapper as a service
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
             //Lambda expressions, pass an expression as a parameter. 
