@@ -16,6 +16,10 @@ namespace API.Data
         //many to many users to likes. 
         public DbSet<UserLike> Likes { get; set; }
 
+        //many to many users to messages
+        public DbSet<Message> Messages { get; set; }
+
+
         //give the entities a configuration, override dbcontext class
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -43,6 +47,18 @@ namespace API.Data
                 .HasForeignKey(s => s.LikedUserId)
                 //if we delete a user we delete the related entities.
                 .OnDelete(DeleteBehavior.Cascade);
+
+            //Many to many  Messages to users 
+            builder.Entity<Message>()
+                .HasOne(u => u.Recipient)
+                .WithMany(m => m.MessagesReceived)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Message>()
+                .HasOne(u => u.Sender)
+                .WithMany(m => m.MessagesSent)
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }

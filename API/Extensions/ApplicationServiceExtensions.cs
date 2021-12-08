@@ -23,6 +23,8 @@ namespace API.Extensions
             services.AddScoped<IUserRepository, UserRepository>();
             //Add Likes Repository to Use in controller
             services.AddScoped<ILikesRepository, LikesRepository>();
+            //Message repository. 
+            services.AddScoped<IMessageRepository, MessageRepository>();
             //Log the last active time
             services.AddScoped<LogUserActivity>();
             //add automapper as a service
