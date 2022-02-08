@@ -1,9 +1,17 @@
 using API.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<AppUser, AppRole, int,
+    IdentityUserClaim<int>,
+    AppUserRole,
+    IdentityUserLogin<int>,
+    IdentityRoleClaim<int>,
+    IdentityUserToken<int>
+    >
     {
         //Generate constructor by hovering over DataContext and right clicking. 
         //Add this configuration to our startup class to allow us to inject it into our configuration. 
@@ -12,7 +20,6 @@ namespace API.Data
         }
 
 
-        public DbSet<AppUser> Users { get; set; }
         //many to many users to likes. 
         public DbSet<UserLike> Likes { get; set; }
 
@@ -24,6 +31,20 @@ namespace API.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            //Set up the asp.net identity tables
+            builder.Entity<AppUser>()
+                .HasMany(ur => ur.UserRoles)
+                .WithOne(u => u.User)
+                .HasForeignKey(ur => ur.UserId)
+                .IsRequired();
+            builder.Entity<AppRole>()
+                .HasMany(ur => ur.UserRoles)
+                .WithOne(u => u.Role)
+                .HasForeignKey(ur => ur.RoleId)
+                .IsRequired();
+
+
 
             //create the primary key for the userLike intermediary table.
             builder.Entity<UserLike>()

@@ -44,6 +44,10 @@ export class AccountService {
   }
 
   setCurrentUser(user: User){
+    user.roles = [];
+    const roles = this.getDecodedToken(user.token).role;
+    //Check if the roles are an array or a string
+    Array.isArray(roles) ? user.roles = roles : user.roles.push(roles);
     localStorage.setItem('user', JSON.stringify(user));
     this.currentUserSource.next(user);
   }
@@ -51,5 +55,11 @@ export class AccountService {
   logout(){
     localStorage.removeItem('user');
     this.currentUserSource.next(null);
+  }
+
+  //Get decoded token
+  getDecodedToken(token){
+    //decode the token and get the middle part of the token which is the payload
+    return JSON.parse(atob(token.split('.')[1]));
   }
 }
